@@ -4,11 +4,14 @@ import lombok.*;
 
 import java.util.Date;
 
+@Getter
 @ToString
 @Builder
 public class Member {
     @NonNull
     private String id;
+    @NonNull
+    private String user_id;
     @NonNull
     private String pw;
     @NonNull

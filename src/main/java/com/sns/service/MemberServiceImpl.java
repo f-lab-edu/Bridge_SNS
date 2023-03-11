@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
 
     @Override
@@ -17,7 +17,12 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public int checkDuplicatedMember(String id) {
-        return memberMapper.checkDuplicatedMember(id);
+    public Boolean checkDuplicatedID(String id) {
+        return memberMapper.checkDuplicatedID(id);
+    }
+
+    @Override
+    public Boolean checkDuplicatedUser(String user_id) {
+        return memberMapper.checkDuplicatedUser(user_id);
     }
 }
