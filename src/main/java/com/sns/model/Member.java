@@ -8,7 +8,6 @@ import java.util.Date;
 @ToString
 @Builder
 public class Member {
-    @NonNull
     private String id;
     @NonNull
     private String user_id;
@@ -21,6 +20,5 @@ public class Member {
     private String profile_name;
     private String profile_message;
     private String profile_image;
-    private String profile_imagepath;
     private Date joindate;
 }

@@ -31,11 +31,11 @@ public class MybatisConfig {
     }
 
     @Bean(name = "SqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource, ApplicationContext context) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
 
-        sessionFactory.setMapperLocations(context.getResources(mapperPath));
+        sessionFactory.setMapperLocations(this.context.getResources(mapperPath));
         return sessionFactory.getObject();
     }
 
