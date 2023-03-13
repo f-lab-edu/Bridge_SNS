@@ -31,7 +31,3 @@ class DBConnectionTest {
         sqlSessionTemplate.getConnection();
     }
 }
-
-
-
-
