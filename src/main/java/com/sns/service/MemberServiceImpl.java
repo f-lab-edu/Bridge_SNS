@@ -4,6 +4,7 @@ package com.sns.service;
 import com.sns.mapper.MemberMapper;
 import com.sns.model.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,12 +18,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean checkDuplicatedID(String id) {
-        return memberMapper.checkDuplicatedID(id);
-    }
-
-    @Override
-    public Boolean checkDuplicatedUser(String user_id) {
-        return memberMapper.checkDuplicatedUser(user_id);
+    public Boolean checkDuplicatedUserID(String user_id) {
+        return memberMapper.checkDuplicatedUserID(user_id);
     }
 }

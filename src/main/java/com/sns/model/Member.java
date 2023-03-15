@@ -8,7 +8,7 @@ import java.util.Date;
 @ToString
 @Builder
 public class Member {
-    private String id;
+    private int id;
     @NonNull
     private String user_id;
     @NonNull
@@ -18,7 +18,7 @@ public class Member {
     @NonNull
     private String email;
     private String profile_name;
-    private String profile_message;
+    private String profile_text;
     private String profile_image;
-    private Date joindate;
+    private Date created_at;
 }
