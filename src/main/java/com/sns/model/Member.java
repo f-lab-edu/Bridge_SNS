@@ -8,7 +8,7 @@ import java.util.Date;
 @ToString
 @Builder
 public class Member {
-    private int id;
+    private byte[] id;
     @NonNull
     private String user_id;
     @NonNull
