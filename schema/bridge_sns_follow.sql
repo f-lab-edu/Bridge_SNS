@@ -26,8 +26,8 @@ DROP TABLE IF EXISTS `follow`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `follow` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `follower_id` int unsigned NOT NULL,
-  `following_id` int unsigned NOT NULL,
+  `follower_id` binary(16) NOT NULL,
+  `following_id` binary(16) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `following_id` (`following_id`),

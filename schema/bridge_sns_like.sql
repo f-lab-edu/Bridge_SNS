@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `like`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `like` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
+  `user_id` binary(16) NOT NULL,
   `post_id` int unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

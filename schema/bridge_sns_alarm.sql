@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `alarm`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alarm` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
+  `user_id` binary(16) NOT NULL,
   `type` varchar(10) NOT NULL,
   `alarm_from` int unsigned NOT NULL,
   `post_id` int unsigned DEFAULT NULL,
