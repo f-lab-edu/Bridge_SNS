@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberMapper {
-    void addMember(Member member);
+    int addMember(Member member);
     Boolean checkDuplicatedUserID(String user_id);
 }
