@@ -1,5 +1,6 @@
 package com.sns.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
+@Slf4j
 @ControllerAdvice
 public class Handler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> GenericExceptionHandler(Exception ex) {
+        log.error("알 수 없는 오류가 발생했습니다: ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 오류가 발생했습니다.");
     }
 
@@ -29,16 +32,19 @@ public class Handler {
             errors.append("\n");
         }
 
+        log.warn("부정확하게 기입된 Member의 정보가 있습니다: \n{}", errors.toString());
         return ResponseEntity.badRequest().body(errors.toString());
     }
 
     @ExceptionHandler(FailedToSignUpException.class) // Sign-Up 실패에 대한 예외 핸들러
     public ResponseEntity<String> FailedToSignUpExceptionHandler(FailedToSignUpException ex) {
+        log.error("회원 가입에 실패했습니다: ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
     @ExceptionHandler(DuplicatedUserIdException.class) // UserID에 중복에 대한 예외 핸들러
     public ResponseEntity<String> handleUserAlreadyExistsException(DuplicatedUserIdException ex) {
+        log.warn("User ID가 중복되었습니다: ", ex);
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }
