@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out from Git repository...'
-                git credentialsId: 'hobulian', url: 'https://github.com/f-lab-edu/Bridge_SNS.git'
+                git credentialsId: 'hobulian_git', url: 'https://github.com/f-lab-edu/Bridge_SNS.git'
             }
         }
 
