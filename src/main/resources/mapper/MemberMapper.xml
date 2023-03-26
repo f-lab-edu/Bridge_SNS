@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sns.mapper.MemberMapper">
+    <insert id="addMember" parameterType="com.sns.model.Member">
+        INSERT INTO member(USER_ID, PW, NAME, EMAIL, PROFILE_NAME, PROFILE_TEXT, PROFILE_IMAGE)
+        VALUES (#{user_id}, #{pw}, #{name}, #{email}, #{profile_name}, #{profile_text}, #{profile_image})
+    </insert>
+
+    <select id="checkDuplicatedUserID" parameterType="String" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM member
+                       WHERE USER_ID = #{user_id}
+                   )
+    </select>
+</mapper>
