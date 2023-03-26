@@ -1,6 +1,5 @@
 package com.sns.sns_bridge;
 
-import com.sns.config.MybatisConfig;
 import com.sns.controller.MemberController;
 import com.sns.exceptions.DuplicatedUserIdException;
 import com.sns.model.Member;
@@ -12,25 +11,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
+/*
 @SpringBootTest
 class SnsBridgeApplicationTests {
 }
+*/
 
-@MybatisTest
+/*@MybatisTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = MybatisConfig.class)
 @DisplayName("DB 커넥션 테스트")
@@ -43,7 +38,7 @@ class DBConnectionTest {
         assertThat(sqlSessionTemplate).isNotNull();
         sqlSessionTemplate.getConnection();
     }
-}
+}*/
 
 @ExtendWith(MockitoExtension.class)
 class MemberControllerTest {

@@ -6,12 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Which Java?') {
-            steps {
-                sh 'java --version'
-            }
-        }
-
         stage('Checkout') {
             steps {
                 echo 'Checking out from Git repository...'
