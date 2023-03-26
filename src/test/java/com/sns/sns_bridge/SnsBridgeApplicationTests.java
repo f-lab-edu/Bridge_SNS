@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,26 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 
-/*
+
 @SpringBootTest
 class SnsBridgeApplicationTests {
 }
-*/
-
-/*@MybatisTest
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = MybatisConfig.class)
-@DisplayName("DB 커넥션 테스트")
-class DBConnectionTest {
-    @Autowired
-    private SqlSessionTemplate sqlSessionTemplate;
-
-    @Test
-    public void testSqlSessionTemplate() {
-        assertThat(sqlSessionTemplate).isNotNull();
-        sqlSessionTemplate.getConnection();
-    }
-}*/
 
 @ExtendWith(MockitoExtension.class)
 class MemberControllerTest {
