@@ -32,7 +32,7 @@ public class Handler {
             errors.append("\n");
         }
 
-        log.warn("부정확하게 기입된 Member의 정보가 있습니다: \n{}", errors.toString());
+        log.warn("부정확하게 기입된 Member의 정보가 있습니다: \n{}", errors);
         return ResponseEntity.badRequest().body(errors.toString());
     }
 
@@ -42,7 +42,7 @@ public class Handler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
-    @ExceptionHandler(DuplicatedUserIdException.class) // UserID에 중복에 대한 예외 핸들러
+    @ExceptionHandler(DuplicatedUserIdException.class) // UserID의 중복에 대한 예외 핸들러
     public ResponseEntity<String> handleUserAlreadyExistsException(DuplicatedUserIdException ex) {
         log.warn("User ID가 중복되었습니다: ", ex);
         return ResponseEntity.badRequest().body(ex.getMessage());
