@@ -9,13 +9,6 @@ pipeline {
             }
         }
 
-        stage('Set Gradlew Permissions') {
-            steps {
-                echo 'Setting permissions for Gradle Wrapper...'
-                sh 'chmod +x gradlew'
-            }
-        }
-
         stage('Unit Test') {
             steps {
                 echo 'Running unit tests...'
