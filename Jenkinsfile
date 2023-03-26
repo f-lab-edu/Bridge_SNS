@@ -19,14 +19,14 @@ pipeline {
         stage('Unit Test') {
             steps {
                 echo 'Running unit tests...'
-                sh './gradlew test --gradle-version 6.9'
+                sh './gradlew test'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh './gradlew build --gradle-version 6.9'
+                sh './gradlew build'
             }
         }
 
