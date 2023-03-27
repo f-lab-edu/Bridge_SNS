@@ -9,8 +9,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out from Git repository...'
-                clean: true
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hobulian_git', url: 'https://github.com/f-lab-edu/Bridge_SNS.git']]])
+                cleanWs()
+                checkout([$class: 'GitSCM', branches: [[name: '*/feature/Adding_Jenkins']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hobulian_git', url: 'https://github.com/f-lab-edu/Bridge_SNS.git']]])
             }
         }
 
