@@ -52,7 +52,7 @@ pipeline {
         stage('Archive Artifacts') {
             steps {
                 echo 'Archiving artifacts...'
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
             }
         }
 
