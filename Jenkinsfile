@@ -20,6 +20,20 @@ pipeline {
             }
         }
 
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                sh './gradlew clean build --stacktrace'
+            }
+        }
+
+        stage('Static Analysis') {
+            steps {
+                echo 'Running static analysis and code quality checks...'
+                sh './gradlew check'
+            }
+        }
+
         stage('Unit Test') {
             steps {
                 echo 'Running unit tests...'
@@ -27,12 +41,12 @@ pipeline {
             }
         }
 
-        stage('Build') {
+/*         stage('Integration Test') {
             steps {
-                echo 'Building the project...'
-                sh './gradlew build'
+                echo 'Running integration tests...'
+                sh './gradlew integrationTest'
             }
-        }
+        } */
 
         stage('Archive Artifacts') {
             steps {
@@ -40,5 +54,23 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
+
+/*         stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // blah..blah..
+            }
+        }
+
+        post {
+            success {
+                echo 'Build and tests succeeded.'
+                // blah..blah..
+            }
+            failure {
+                echo 'Build or tests failed.'
+                // blah..blah..
+            }
+        } */
     }
 }
