@@ -33,6 +33,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'de.mkammerer:argon2-jvm:2.11'
     modules {
         module('org.springframework.boot:spring-boot-starter-logging') {
             replacedBy('org.springframework.boot:spring-boot-starter-log4j2')

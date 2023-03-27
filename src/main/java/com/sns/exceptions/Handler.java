@@ -13,10 +13,12 @@ import java.util.List;
 @Slf4j
 @ControllerAdvice
 public class Handler {
+    private static final ResponseEntity<String> INTERNAL_SERVER_ERROR_RESPONSE = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> GenericExceptionHandler(Exception ex) {
         log.error("알 수 없는 오류가 발생했습니다: ", ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 오류가 발생했습니다.");
+        return INTERNAL_SERVER_ERROR_RESPONSE;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class) // 잘못된 Member 정보 기입에 대한 예외 핸들러
@@ -46,5 +48,11 @@ public class Handler {
     public ResponseEntity<String> handleUserAlreadyExistsException(DuplicatedUserIdException ex) {
         log.warn("User ID가 중복되었습니다: ", ex);
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(FailedToLogInException.class) // 로그인 실패에 대한 예외 핸들러
+    public ResponseEntity<String> handleFailedToLogInException(FailedToLogInException ex) {
+        log.warn("로그인에 실패했습니다: ", ex);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
