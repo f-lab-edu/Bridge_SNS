@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo 'Checking out from Git repository...'
                 cleanWs()
-                checkout([$class: 'GitSCM', branches: [[name: '*/feature/Adding_Jenkins']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hobulian_git', url: 'https://github.com/f-lab-edu/Bridge_SNS.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/${BRANCH_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hobulian_git', url: 'https://github.com/f-lab-edu/Bridge_SNS.git']]])
             }
         }
 
@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh './gradlew clean build --stacktrace'
+                sh './gradlew clean build'
             }
         }
 
@@ -48,13 +48,6 @@ pipeline {
                 sh './gradlew integrationTest'
             }
         } */
-
-        stage('Archive Artifacts') {
-            steps {
-                echo 'Archiving artifacts...'
-                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
-            }
-        }
 
 /*         stage('Deploy') {
             steps {
