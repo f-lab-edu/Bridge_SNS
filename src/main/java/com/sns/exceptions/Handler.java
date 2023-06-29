@@ -21,6 +21,12 @@ public class Handler {
         return INTERNAL_SERVER_ERROR_RESPONSE;
     }
 
+    @ExceptionHandler(DBConnectionException.class) // DB 연결 실패에 대한 예외 핸들러
+    public ResponseEntity<String> handleDBConnectionException(DBConnectionException ex) {
+        log.error("DB 연결에 실패했습니다: ", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class) // 잘못된 Member 정보 기입에 대한 예외 핸들러
     public ResponseEntity<String> ValidationExceptionsHandler(MethodArgumentNotValidException ex) {
         // 에러 메시지를 저장할 StringBuilder 생성
@@ -50,9 +56,15 @@ public class Handler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    @ExceptionHandler(FailedToLogInException.class) // 로그인 실패에 대한 예외 핸들러
-    public ResponseEntity<String> handleFailedToLogInException(FailedToLogInException ex) {
-        log.warn("로그인에 실패했습니다: ", ex);
+    @ExceptionHandler(UserIdNotFoundException.class) // 로그인 실패에 대한 예외 핸들러
+    public ResponseEntity<String> handleFailedToLogInException(UserIdNotFoundException ex) {
+        log.warn("User ID를 찾을 수 없습니다: ", ex);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class) // 로그인 실패에 대한 예외 핸들러
+    public ResponseEntity<String> handleFailedToLogInException(IncorrectPasswordException ex) {
+        log.warn("올바르지 않은 비밀번호입니다: ", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

@@ -2,7 +2,8 @@ package com.sns.sns_bridge;
 
 import com.sns.controller.MemberController;
 import com.sns.exceptions.DuplicatedUserIdException;
-import com.sns.exceptions.FailedToLogInException;
+import com.sns.exceptions.IncorrectPasswordException;
+import com.sns.exceptions.UserIdNotFoundException;
 import com.sns.model.Member;
 import com.sns.model.MemberLoginInfo;
 import com.sns.service.MemberService;
@@ -104,13 +105,23 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 테스트")
-    public void login_failed() {
-        when(memberService.getLoginUser(loginInfo)).thenThrow(new FailedToLogInException());
+    @DisplayName("로그인 실패 테스트 - ID 존재하지 않음")
+    public void login_failed_id_not_found() {
+        when(memberService.getLoginUser(loginInfo)).thenThrow(new UserIdNotFoundException());
 
-        assertThrows(FailedToLogInException.class, () -> memberController.loginMember(loginInfo, httpSession));
+        assertThrows(UserIdNotFoundException.class, () -> memberController.loginMember(loginInfo, httpSession));
         Mockito.verify(httpSession, Mockito.never()).setAttribute(SessionKey.MEMBER, member);
     }
+
+    @Test
+    @DisplayName("로그인 실패 테스트 - 틀린 비밀번호")
+    public void login_failed_incorrect_pw() {
+        when(memberService.getLoginUser(loginInfo)).thenThrow(new IncorrectPasswordException());
+
+        assertThrows(IncorrectPasswordException.class, () -> memberController.loginMember(loginInfo, httpSession));
+        Mockito.verify(httpSession, Mockito.never()).setAttribute(SessionKey.MEMBER, member);
+    }
+
 
     @Test
     @DisplayName("로그아웃 테스트")

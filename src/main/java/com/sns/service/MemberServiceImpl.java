@@ -2,7 +2,7 @@ package com.sns.service;
 
 
 import com.sns.exceptions.DuplicatedUserIdException;
-import com.sns.exceptions.FailedToLogInException;
+import com.sns.exceptions.UserIdNotFoundException;
 import com.sns.exceptions.FailedToSignUpException;
 import com.sns.mapper.MemberMapper;
 import com.sns.model.Member;
@@ -60,10 +60,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getLoginUser(MemberLoginInfo loginInfo) {
         String storedPassword = memberMapper.getStoredPassword(loginInfo.getUser_id());
+        if (storedPassword == null) {
+            throw new UserIdNotFoundException();
+        }
+
         boolean isValidPassword = passwordEncryptor.verifyPassword(loginInfo.getPw(), storedPassword);
 
-        if (storedPassword == null || !isValidPassword) {
-            throw new FailedToLogInException();
+        if (!isValidPassword) {
+            throw new IncorrectPasswordExcpetion();
         }
 
         Member member = memberMapper.getMember(loginInfo);
