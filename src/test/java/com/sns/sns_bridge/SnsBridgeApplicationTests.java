@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SnsBridgeApplicationTests {
@@ -132,5 +132,42 @@ class MemberControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         Mockito.verify(httpSession).invalidate();
+    }
+
+    @Test
+    @DisplayName("회원 정보 업데이트 성공 테스트")
+    public void updateMember_success() {
+        byte[] id = new byte[16];
+        when(httpSession.getAttribute(SessionKey.MEMBER)).thenReturn(id);
+        when(memberService.getMemberById(id)).thenReturn(member);
+
+        Member updatedMember = Member.builder()
+                .user_id("updatedID")
+                .pw("updatedPW")
+                .name("updatedUser")
+                .email("updatedUser@email.com")
+                .build();
+
+        memberController.updateMember(updatedMember, httpSession);
+
+        Mockito.verify(memberService).updateMember(updatedMember);
+    }
+
+    @Test
+    @DisplayName("회원 정보 업데이트 실패 테스트 - 로그인이 필요함")
+    public void updateMember_failed_not_logged_in() {
+        when(httpSession.getAttribute(SessionKey.MEMBER)).thenReturn(null);
+
+        Member updatedMember = Member.builder()
+                .user_id("updatedID")
+                .pw("updatedPW")
+                .name("updatedUser")
+                .email("updatedUser@email.com")
+                .build();
+
+        ResponseEntity<String> response = memberController.updateMember(updatedMember, httpSession);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        Mockito.verify(memberService, Mockito.never()).updateMember(updatedMember);
     }
 }

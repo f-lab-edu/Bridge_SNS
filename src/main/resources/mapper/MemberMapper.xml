@@ -36,4 +36,23 @@
         FROM member
         WHERE user_id = #{user_id}
     </select>
+
+    <select id="getMemberById" parameterType="byte[]" resultType="com.sns.model.Member">
+        SELECT *
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateMember" parameterType="com.sns.model.Member">
+        UPDATE member
+        SET USER_ID = #{user_id},
+            PW = #{pw},
+            NAME = #{name},
+            EMAIL = #{email},
+            PROFILE_NAME = #{profile_name},
+            PROFILE_TEXT = #{profile_text},
+            PROFILE_IMAGE = #{profile_image}
+        WHERE ID = #{id}
+    </update>
+
 </mapper>

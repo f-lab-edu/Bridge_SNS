@@ -67,4 +67,10 @@ public class Handler {
         log.warn("올바르지 않은 비밀번호입니다: ", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(MemberNotFoundException.class) // MemberNotFoundException에 대한 예외 핸들러
+    public ResponseEntity<String> handleMemberNotFoundException(MemberNotFoundException ex) {
+        log.warn("멤버를 찾을 수 없습니다: ", ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
