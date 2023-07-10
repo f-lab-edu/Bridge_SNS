@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SnsBridgeApplicationTests {
@@ -132,5 +132,26 @@ class MemberControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         Mockito.verify(httpSession).invalidate();
+    }
+
+    @Test
+    @DisplayName("회원 삭제 성공 테스트")
+    public void deleteMember_success() {
+        when(httpSession.getAttribute(SessionKey.MEMBER)).thenReturn(member);
+        doNothing().when(memberService).deleteMember(member);
+
+        ResponseEntity<String> response = memberController.deleteMember(httpSession);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("회원 삭제 실패 테스트 - 로그인되어있지 않음")
+    public void deleteMember_not_logged_in() {
+        when(httpSession.getAttribute(SessionKey.MEMBER)).thenReturn(null);
+
+        ResponseEntity<String> response = memberController.deleteMember(httpSession);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 }
