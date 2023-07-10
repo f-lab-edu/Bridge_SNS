@@ -2,9 +2,12 @@ package com.sns.service;
 
 
 import com.sns.exceptions.DuplicatedUserIdException;
+import com.sns.exceptions.UserIdNotFoundException;
 import com.sns.exceptions.FailedToSignUpException;
 import com.sns.mapper.MemberMapper;
 import com.sns.model.Member;
+import com.sns.model.MemberLoginInfo;
+import com.sns.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
+    private final PasswordEncryptor passwordEncryptor;
 
     @Override
     public void addMemberWithUUID(Member member) {
@@ -51,5 +55,22 @@ public class MemberServiceImpl implements MemberService {
         if (isDuplicatedUserID) {
             throw new DuplicatedUserIdException();
         }
+    }
+
+    @Override
+    public Member getLoginUser(MemberLoginInfo loginInfo) {
+        String storedPassword = memberMapper.getStoredPassword(loginInfo.getUser_id());
+        if (storedPassword == null) {
+            throw new UserIdNotFoundException();
+        }
+
+        boolean isValidPassword = passwordEncryptor.verifyPassword(loginInfo.getPw(), storedPassword);
+
+        if (!isValidPassword) {
+            throw new IncorrectPasswordExcpetion();
+        }
+
+        Member member = memberMapper.getMember(loginInfo);
+        return member;
     }
 }

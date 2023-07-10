@@ -3,8 +3,8 @@
 
 <mapper namespace="com.sns.mapper.MemberMapper">
     <insert id="addMember" parameterType="com.sns.model.Member">
-        INSERT INTO member(USER_ID, PW, NAME, EMAIL, PROFILE_NAME, PROFILE_TEXT, PROFILE_IMAGE)
-        VALUES (#{user_id}, #{pw}, #{name}, #{email}, #{profile_name}, #{profile_text}, #{profile_image})
+        INSERT INTO member(ID, USER_ID, PW, NAME, EMAIL, PROFILE_NAME, PROFILE_TEXT, PROFILE_IMAGE)
+        VALUES (#{id}, #{user_id}, #{pw}, #{name}, #{email}, #{profile_name}, #{profile_text}, #{profile_image})
     </insert>
 
     <select id="checkDuplicatedUserID" parameterType="String" resultType="boolean">
@@ -13,5 +13,27 @@
                        FROM member
                        WHERE USER_ID = #{user_id}
                    )
+    </select>
+
+    <select id="getStoredPassword" parameterType="String" resultType="String">
+        SELECT pw
+        FROM member
+        WHERE user_id = #{user_id}
+    </select>
+
+    <select id="getMember" parameterType="com.sns.model.MemberLoginInfo"
+            resultType="com.sns.model.Member">
+        SELECT id,
+               pw,
+               user_id,
+               email,
+               name,
+               profile_name,
+               profile_text,
+               profile_image,
+               created_at,
+               email
+        FROM member
+        WHERE user_id = #{user_id}
     </select>
 </mapper>

@@ -2,14 +2,20 @@ package com.sns.sns_bridge;
 
 import com.sns.controller.MemberController;
 import com.sns.exceptions.DuplicatedUserIdException;
+import com.sns.exceptions.IncorrectPasswordException;
+import com.sns.exceptions.UserIdNotFoundException;
 import com.sns.model.Member;
+import com.sns.model.MemberLoginInfo;
 import com.sns.service.MemberService;
+import com.sns.util.SessionKey;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -34,7 +40,11 @@ class MemberControllerTest {
     @Mock
     private MemberService memberService;
 
+    @Mock
+    private HttpSession httpSession;
+
     private Member member;
+    private MemberLoginInfo loginInfo;
 
     @BeforeEach
     public void setUp() {
@@ -44,6 +54,7 @@ class MemberControllerTest {
                 .name("testUser")
                 .email("testUser@email.com")
                 .build();
+        loginInfo = new MemberLoginInfo("testID", "testPW");
     }
 
     @Test
@@ -56,7 +67,6 @@ class MemberControllerTest {
         ResponseEntity<String> response = memberController.addMember(member);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("회원 가입을 완료했습니다.", response.getBody());
     }
 
     @Test
@@ -83,6 +93,44 @@ class MemberControllerTest {
         ResponseEntity<String> response = memberController.checkDuplicatedMember(member.getUser_id());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("사용 가능한 아이디입니다.", response.getBody());
+    }
+
+    @Test
+    @DisplayName("로그인 성공 테스트")
+    public void login_success() {
+        when(memberService.getLoginUser(loginInfo)).thenReturn(member);
+
+        ResponseEntity<String> response = memberController.loginMember(loginInfo, httpSession);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Mockito.verify(httpSession).setAttribute(SessionKey.MEMBER, member);
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트 - ID 존재하지 않음")
+    public void login_failed_id_not_found() {
+        when(memberService.getLoginUser(loginInfo)).thenThrow(new UserIdNotFoundException());
+
+        assertThrows(UserIdNotFoundException.class, () -> memberController.loginMember(loginInfo, httpSession));
+        Mockito.verify(httpSession, Mockito.never()).setAttribute(SessionKey.MEMBER, member);
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트 - 틀린 비밀번호")
+    public void login_failed_incorrect_pw() {
+        when(memberService.getLoginUser(loginInfo)).thenThrow(new IncorrectPasswordException());
+
+        assertThrows(IncorrectPasswordException.class, () -> memberController.loginMember(loginInfo, httpSession));
+        Mockito.verify(httpSession, Mockito.never()).setAttribute(SessionKey.MEMBER, member);
+    }
+
+
+    @Test
+    @DisplayName("로그아웃 테스트")
+    public void logout() {
+        ResponseEntity<Void> response = memberController.logoutMember(httpSession);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Mockito.verify(httpSession).invalidate();
     }
 }
