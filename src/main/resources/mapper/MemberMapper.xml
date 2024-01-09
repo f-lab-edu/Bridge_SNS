@@ -36,4 +36,15 @@
         FROM member
         WHERE user_id = #{user_id}
     </select>
+
+    <select id="getMemberById" parameterType="byte[]" resultType="com.sns.model.Member">
+        SELECT *
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <delete id="deleteMember" parameterType="com.sns.model.Member">
+        DELETE FROM member
+        WHERE id = #{id}
+    </delete>
 </mapper>
