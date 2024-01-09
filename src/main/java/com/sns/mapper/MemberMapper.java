@@ -10,4 +10,6 @@ public interface MemberMapper {
     Boolean checkDuplicatedUserID(String user_id);
     String getStoredPassword(String user_id);
     Member getMember(MemberLoginInfo loginInfo);
+    Member getMemberById(byte[] id);
+    void updateMember(Member member); // Added method for updating a member
 }
